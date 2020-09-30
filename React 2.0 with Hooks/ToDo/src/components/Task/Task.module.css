@@ -1,0 +1,62 @@
+.wrapper {
+    display: flex;
+    padding: 0 20px;
+    justify-content: space-between;
+    margin: 20px 0;
+    align-items: center;
+}
+
+.wrapper:hover {
+    background-color: #dfdfe7;
+}
+
+.inputsWrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+
+}
+
+span {
+    color: #625f5f;
+    display: inline-block;
+    cursor: pointer;
+    font-family: sans-serif, Arial;
+    font-size: 34px;
+    font-weight: bold;
+}
+
+
+.date {
+
+    font-size: 18px;
+    margin: 4px 10px;
+    color: #94968d;
+    font-family: sans-serif, Arial;
+    cursor: auto;
+}
+
+.checked {
+    text-decoration: line-through;
+    text-decoration-color: #2e2f31;
+    font-style: italic;
+    color: #067005;
+    opacity: .6;
+}
+
+.btn  {
+    display: inline-block;
+    font-family: sans-serif, Arial;
+    padding: 10px;
+    cursor: auto;
+    background-color: inherit;
+    font-size: 14px;
+    border: 1px solid red;
+    border-radius: 6px;
+    color: red;
+}
+
+.btn:hover {
+    color: white;
+    background: #d72727;
+}

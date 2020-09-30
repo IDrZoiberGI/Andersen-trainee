@@ -1,0 +1,72 @@
+body {
+    background-color: #EEF2F6;
+    font-family: sans-serif;
+}
+
+.wrapper {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.app {
+    background-color: white;
+    margin: 100px auto;
+    padding-bottom: 2px;
+    text-align: center;
+    width: 60%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(59, 80, 132, 0.15);
+}
+
+.sorted {
+    margin: 20px auto;
+}
+
+
+.filterWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    margin: 0 auto 50px auto;
+    align-items: center;
+}
+
+
+.filter {
+    color: gray;
+    background-color: #e9e9ee;
+    margin: 10px 20px;
+    outline: none;
+    border: none;
+    font-size: 30px;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+
+.btn {
+    border: none;
+    display: inline-block;
+    margin: 0 15px;
+    font-size: 14px;
+    border-radius: 5px;
+    width: 120px;
+    height: 40px;
+    background-color: #3379E1;
+    color: white;
+
+}
+
+
+.btn:hover {
+    background-color: #4992FF;
+    color: white;
+    box-shadow: 0 4px 8px rgba(31, 48, 107, 0.2);
+    cursor: pointer;
+}
+
+.btn, .btn:active, .btn:focus {
+    outline: none;
+}
+
