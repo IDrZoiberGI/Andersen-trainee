@@ -12,19 +12,20 @@ const App = () => {
 
 
     const toggleTaskStatus = id => {
-        const items = tasks.map(task => {
-            if (task.id === id) {
-                return {
-                    id: task.id,
-                    title: task.title,
-                    date: task.date,
-                    checked: !task.checked
+        setTasks(prevState => {
+            return prevState.map(task => {
+                if (task.id === id) {
+                    return {
+                        id: task.id,
+                        title: task.title,
+                        date: task.date,
+                        checked: !task.checked
+                    }
+                } else {
+                    return task;
                 }
-            } else {
-                return task;
-            }
+            })
         })
-        setTasks(items);
     };
 
     const addTaskToState = (title, date) => {
@@ -67,10 +68,9 @@ const App = () => {
         const arrWithFilteredText = items.filter(tasks => tasks.title.toLowerCase().includes(textInput.toLowerCase()));
         const initialState = JSON.parse(localStorage.getItem('tasks')) || [];
         const arrFilteredByDate = initialState.filter(tasks => tasks.date.includes(dateInput));
+        const newArr = textInput ? arrWithFilteredText : arrFilteredByDate;
         setTextInput(textInput);
-        setTasks(() => textInput ? arrWithFilteredText : dateInput ? arrFilteredByDate : initialState);
-
-
+        setTasks(newArr);
     };
 
     let filterByDate = e => {
@@ -92,10 +92,19 @@ const App = () => {
     return (
         <div className={s.wrapper}>
             <div className={s.filterWrapper}>
-                <input type="text" placeholder={'Filter tby tasks ...'} value={textInput}
-                       onChange={filterByText} className={s.filter}/>
-                <input className={s.filter} type="date" value={dateInput} onChange={filterByDate}/>
-                <button className={s.btn} onClick={() => reset()}>Reset all filters</button>
+                <input
+                    type="text"
+                    placeholder={'Filter tby tasks ...'}
+                    value={textInput}
+                    onChange={filterByText}
+                    className={s.filter}
+                />
+                <input
+                    className={s.filter}
+                    type="date"
+                    value={dateInput}
+                    onChange={filterByDate}/>
+                <button className={s.btn} onClick={reset}>Reset all filters</button>
             </div>
             <div className={s.sorted}>
                 <button className={s.btn} onClick={() => sortBy('date')}>Sort By Date</button>
@@ -103,8 +112,10 @@ const App = () => {
             </div>
             <div className={s.app}>
                 <AddTask addTask={addTaskToState}/>
-                <Task items={tasks} deleteTask={deleteTask}
-                      toggleTaskStatus={toggleTaskStatus}
+                <Task
+                    items={tasks}
+                    deleteTask={deleteTask}
+                    toggleTaskStatus={toggleTaskStatus}
                 />
             </div>
         </div>

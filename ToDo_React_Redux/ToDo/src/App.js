@@ -11,16 +11,24 @@ import {
     toggleTaskStatus
 } from "./redux/actions";
 
+
 class App extends React.Component {
     render() {
         return (
             <div className={s.wrapper}>
                 <div className={s.filterWrapper}>
-                    <input type="text" placeholder={'Filter tby tasks ...'} value={this.props.textInput}
-                           onChange={this.props.filterByText} className={s.filter}/>
-                    <input className={s.filter} type="date" value={this.props.dateInput}
-                           onChange={this.props.filterByDate}/>
-                    <button className={s.btn} onClick={() => this.props.reset()}>Reset all filters</button>
+                    <input
+                        type="text"
+                        placeholder={'Filter by tasks ...'}
+                        value={this.props.textInput}
+                        onChange={this.props.filterByText}
+                        className={s.filter}/>
+                    <input
+                        className={s.filter}
+                        type="date"
+                        value={this.props.dateInput}
+                        onChange={this.props.filterByDate}/>
+                    <button className={s.btn} onClick={this.props.reset}>Reset all filters</button>
                 </div>
                 <div className={s.sorted}>
                     <button className={s.btn} onClick={() => this.props.sortBy('date')}>Sort By Date</button>

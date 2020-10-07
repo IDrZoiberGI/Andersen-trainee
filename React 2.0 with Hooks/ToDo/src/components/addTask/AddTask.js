@@ -1,21 +1,20 @@
 import React from 'react';
 import {useState} from 'react';
 import s from './AddTask.module.css';
+
 const AddTask = (props) => {
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
-    const [isValid, setIsValid] = useState(true);
-    const [isDate, setIsDate] = useState(true);
+    const [isErrorText, setIsErrorText] = useState(false);
+
 
     const onChangeTextInput = e => {
         const title = e.target.value;
-        title ? setIsValid(() => true) : setIsValid(() => false);
-        setTitle(title)
+        setTitle(title);
     };
 
     const onChangeDateInput = e => {
         const date = e.target.value;
-        date ? setIsDate(() => true) : setIsDate(() => true);
         setDate(date);
     };
 
@@ -28,32 +27,41 @@ const AddTask = (props) => {
     }
 
     const addTask = () => {
-        if (!date) {
-            setIsDate(() => false);
-        }
-        if (!title) {
-            setIsValid(() => false);
-        }
-        if (date && isDate && title && isValid) {
+        if (date && title) {
             props.addTask(title, date);
-            setIsValid(() => true);
-            setIsDate(() => true);
             setTitle('');
             setDate('');
         }
     };
-
+    const onBlurHandler = e => {
+        const value = e.target.value;
+        setIsErrorText(() => !Boolean(value));
+    };
     return (
         <div className={s.task}>
-            <input className={isValid ? s.inputText : s.error} placeholder="Add your task here ..."
-                   type="text" value={title}
-                   onKeyDown={addTaskOnEnter} onChange={onChangeTextInput}
+            <input
+                className={isErrorText ? s.error : s.inputText}
+                placeholder="Add your task here ..."
+                type="text"
+                value={title}
+                onKeyDown={addTaskOnEnter}
+                onChange={onChangeTextInput}
+                onBlur={onBlurHandler}
             />
-            <input type="date" value={date} className={isDate ? s.inputDate : s.inputDateError}
-                   onChange={onChangeDateInput}
-                   onKeyDown={addTaskOnEnter}/>
-            <button className={s.addTask}
-                    onClick={() => addTask()}>ADD
+            <input
+                type="date"
+                value={date}
+                className={s.inputDate}
+                onChange={onChangeDateInput}
+                onKeyDown={addTaskOnEnter}
+            />
+
+            <button
+                className={s.addTask}
+                onClick={() => addTask()}
+                disabled={!(title && date)}
+            >
+                ADD
             </button>
         </div>
     )

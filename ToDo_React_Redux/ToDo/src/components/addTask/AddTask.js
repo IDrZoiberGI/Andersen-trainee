@@ -1,7 +1,7 @@
 import React from 'react';
 import s from './addTask.module.css';
-import { connect } from "react-redux";
-import { addTask } from "../../redux/actions";
+import {connect} from "react-redux";
+import {addTask} from "../../redux/actions";
 
 class AddTask extends React.Component {
     constructor(props) {
@@ -9,20 +9,17 @@ class AddTask extends React.Component {
         this.state = {
             title: '',
             date: '',
-            isText: true,
-            isDate: true
-        }
-    }
+            isErrorText: false,
+        };
+    };
 
     onChangeTextInput = e => {
         const inputText = e.target.value;
-        inputText ? this.setState({isText: true}) : this.setState({isText: false});
         this.setState({title: inputText});
     };
 
     onChangeDateInput = e => {
         const date = e.target.value;
-        date ? this.setState({isDate: true}) : this.setState({isDate: false});
         this.setState({date});
     };
 
@@ -31,38 +28,57 @@ class AddTask extends React.Component {
         if (e.keyCode === 13 && title && date) {
             const {title, date} = this.state;
             this.props.addTask(title, date);
-            this.setState({title: '', date: ''});
+            this.setState({
+                title: '',
+                date: ''
+            });
         }
     };
 
     addTask = () => {
-        const {title, date, isText, isDate} = this.state;
-        if (!date) {
-            this.setState({isDate: false});
-        }
-        if (!title) {
-            this.setState({isText: false});
-        }
-        if (date && isDate && title && isText) {
+        const {title, date} = this.state;
+        if (date && title) {
             this.props.addTask(title, date);
-            this.setState({isText: true, isDate: true, title: '', date: ''})
+            this.setState({
+                title: '',
+                date: '',
+            });
         }
     };
 
 
+    onBlurHandler = e => {
+        const value = e.target.value;
+        this.setState({isErrorText: !Boolean(value)});
+    };
+
+
     render() {
-        const {title, date, isText, isDate} = this.state;
+        const {title, date, isErrorText} = this.state;
         return (
             <div className={s.task}>
-                <input className={isText ? s.inputText : s.error} placeholder="Add your task here ..."
-                       type="text" value={title}
-                       onKeyDown={this.addTaskOnEnter} onChange={this.onChangeTextInput}
+                <input
+                    className={isErrorText ? s.error : s.inputText}
+                    placeholder="Add your task here ..."
+                    type="text"
+                    value={title}
+                    onKeyDown={this.addTaskOnEnter}
+                    onChange={this.onChangeTextInput}
+                    onBlur={this.onBlurHandler}
                 />
-                <input type="date" value={date} className={isDate ? s.inputDate : s.inputDateError}
-                       onChange={this.onChangeDateInput}
-                       onKeyDown={this.addTaskOnEnter}/>
-                <button className={s.btnAdd}
-                        onClick={() => this.addTask()}>ADD
+                <input
+                    type="date"
+                    value={date}
+                    className={s.inputDate}
+                    onChange={this.onChangeDateInput}
+                    onKeyDown={this.addTaskOnEnter}
+                />
+                <button
+                    className={s.btnAdd}
+                    onClick={this.addTask}
+                    disabled={!(title && date)}
+                >
+                    ADD
                 </button>
             </div>
         );

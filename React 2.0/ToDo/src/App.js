@@ -15,19 +15,20 @@ class App extends React.Component {
     };
 
     toggleTaskStatus = id => {
-        const items = this.state.items.map(task => {
-            if (task.id === id) {
-                return {
-                    id: task.id,
-                    title: task.title,
-                    date: task.date,
-                    checked: !task.checked
+        this.setState(prevState => ({
+            items: prevState.items.map(task => {
+                if (task.id === id) {
+                    return {
+                        id: task.id,
+                        title: task.title,
+                        date: task.date,
+                        checked: !task.checked
+                    };
+                } else {
+                    return task;
                 }
-            } else {
-                return task;
-            }
-        })
-        this.setState({items});
+            })
+        }));
     };
 
     addTaskToState = (title, date) => {
@@ -62,7 +63,10 @@ class App extends React.Component {
             }
             return null;
         });
-        this.setState({items, order: !order});
+        this.setState({
+            items,
+            order: !order
+        });
     };
 
 
@@ -72,13 +76,10 @@ class App extends React.Component {
         const arrWithFilteredText = items.filter(tasks => tasks.title.toLowerCase().includes(textInput.toLowerCase()));
         const initialState = JSON.parse(localStorage.getItem('tasks')) || [];
         const arrFilteredByDate = initialState.filter(tasks => tasks.date.includes(this.state.dateInput));
+        const newArr = textInput ? arrWithFilteredText : arrFilteredByDate;
         this.setState({
             textInput,
-            items: textInput
-                ? arrWithFilteredText
-                : this.state.dateInput
-                    ? arrFilteredByDate
-                    : initialState
+            items: newArr
         });
     };
 
@@ -86,12 +87,19 @@ class App extends React.Component {
         const items = [...this.state.items];
         const dateInput = e.target.value;
         const arrWithSelectedDate = items.filter(tasks => tasks.date.includes(dateInput));
-        this.setState({dateInput, items: arrWithSelectedDate});
+        this.setState({
+            dateInput,
+            items: arrWithSelectedDate
+        });
     };
 
     reset = () => {
         const initialState = JSON.parse(localStorage.getItem('tasks')) || [];
-        this.setState({items: initialState, textInput: '', dateInput: ''});
+        this.setState({
+            items: initialState,
+            textInput: '',
+            dateInput: ''
+        });
     };
 
     render() {
@@ -99,10 +107,19 @@ class App extends React.Component {
         return (
             <div className={s.wrapper}>
                 <div className={s.filterWrapper}>
-                    <input type="text" placeholder={'Filter tby tasks ...'} value={textInput}
-                           onChange={this.filterByText} className={s.filter}/>
-                    <input className={s.filter} type="date" value={dateInput} onChange={this.filterByDate}/>
-                    <button className={s.btn} onClick={() => this.reset()}>Reset all filters</button>
+                    <input
+                        type="text"
+                        placeholder={'Filter tby tasks ...'}
+                        value={textInput}
+                        onChange={this.filterByText}
+                        className={s.filter}
+                    />
+                    <input
+                        className={s.filter}
+                        type="date"
+                        value={dateInput}
+                        onChange={this.filterByDate}/>
+                    <button className={s.btn} onClick={this.reset}>Reset all filters</button>
                 </div>
                 <div className={s.sorted}>
                     <button className={s.btn} onClick={() => this.sortBy('date')}>Sort By Date</button>
@@ -110,8 +127,10 @@ class App extends React.Component {
                 </div>
                 <div className={s.app}>
                     <AddTask addTask={this.addTaskToState}/>
-                    <Task items={this.state.items} deleteTask={this.deleteTask}
-                          toggleTaskStatus={this.toggleTaskStatus}
+                    <Task
+                        items={this.state.items}
+                        deleteTask={this.deleteTask}
+                        toggleTaskStatus={this.toggleTaskStatus}
                     />
                 </div>
             </div>

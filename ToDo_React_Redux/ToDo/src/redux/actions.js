@@ -38,12 +38,16 @@ export const sortBy = prop => ({
 
 export const filterByDate = event => ({
   type: FILTER_BY_DATE,
-  payload: {event}
+  payload: {
+      dateInput: event.target.value,
+  }
 });
 
 export const filterByText = (event) => ({
     type: FILTER_BY_TEXT,
-    payload: {event }
+    payload: {
+        textInput: event.target.value,
+    }
 });
 
 export const reset = () => ({

@@ -4,17 +4,29 @@ import {connect} from "react-redux";
 import {deleteTask, toggleTaskStatus} from "../../redux/actions";
 
 const Task = (props) => {
+    const toggleStatus = id => () => {
+        props.toggleTaskStatus(id)
+    };
+
+    const deleteItem = id => () => {
+        props.deleteTask(id)
+    };
+
     return (
         <div>
             {props.items.map(task => {
                 return (
                     <div key={task.id} className={s.wrapper}>
                         <div className={s.inputsWrapper}>
-                            <span onClick={() => props.toggleTaskStatus(task.id)}
-                                  className={task.checked ? s.checked : ''}>{task.title}</span>
+                            <span
+                                onClick={toggleStatus(task.id)}
+                                className={task.checked ? s.checked : ''}
+                            >
+                                {task.title}
+                            </span>
                             <span className={s.date}>{task.date}</span>
                         </div>
-                        <button className={s.btn} onClick={() => props.deleteTask(task.id)}>Delete</button>
+                        <button className={s.btn} onClick={deleteItem(task.id)}>Delete</button>
                     </div>
                 );
             })};

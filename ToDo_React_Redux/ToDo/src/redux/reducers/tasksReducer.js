@@ -68,8 +68,7 @@ const todos = (state = initialState, action) => {
 
         case SORT_BY: {
             const items = [...state.tasks];
-            const {dateInput, textInput} = state;
-            const {initialTask, order} = state;
+            const {dateInput, textInput, initialTask, order} = state;
             const {prop} = action.payload;
             return {
                 initialTask,
@@ -89,9 +88,8 @@ const todos = (state = initialState, action) => {
         }
 
         case FILTER_BY_DATE: {
-            const {event} = action.payload;
+            const {dateInput} = action.payload;
             const items = [...state.tasks];
-            const dateInput = event.target.value;
             const {initialTask, textInput} = state;
             return {
                 initialTask,
@@ -103,15 +101,15 @@ const todos = (state = initialState, action) => {
 
         case FILTER_BY_TEXT: {
             const items = [...state.tasks];
-            const {event} = action.payload;
-            const textInput = event.target.value;
+            const {textInput} = action.payload;
             const arrWithFilteredText = items.filter(tasks => tasks.title.toLowerCase().includes(textInput.toLowerCase()));
             const initialState = state.initialTask || [];
             const initialStateFilteredByDate = initialState.filter(tasks => tasks.date.includes(textInput));
+            const newArr = textInput ? arrWithFilteredText : initialStateFilteredByDate;
             return {
                 initialTask: state.initialTask,
                 textInput,
-                tasks: textInput ? arrWithFilteredText : state.dateInput ? initialStateFilteredByDate : initialState,
+                tasks: newArr,
                 dateInput: state.dateInput
             };
         }
